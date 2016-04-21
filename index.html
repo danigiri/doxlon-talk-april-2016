@@ -32,14 +32,14 @@
 						<h3>Daniel Giribet</h3>
 					</p>
 					<p>
-						<h4>Engineering Manager @ Infrastructure Platform - Schibsted</h4>
+						<h4>Engineering Manager @ Infrastructure - Schibsted</h4>
 					</p>
 				</section>
 				<section>
 					<h2>Today</h2>
 					<ul>
 						<li>Schibsted intro</li>
-						<li>A resilience global scale service example</li>
+						<li>A resilient global scale service</li>
 						<li>Useful patterns</li>
 						<li>Lessons learned</li>
 				</ul>
@@ -51,12 +51,12 @@
 					<p class="fragment">Schibsted Media Group is an international media group with 6800 employees in 31 countries</p>
 					<p class="fragment"><strong>250M+ users</strong></p>					
 				</section>
+				<!-- section>
+					<img src="./img/schibsted_sites.png"/>
+				</section-->
 				<section>
 					<img src="./img/schibsted-classified-map.png"/>
 				</section>	
-				<section>
-					<img src="./img/schibsted_sites.png"/>
-				</section>
 				<section>
 					<img src="./img/leboncoin.png"/>
 				</section>				
@@ -64,7 +64,7 @@
 				<section>
 					<h2>Image Service</h2>
 					<p>
-						A global-scale image and media storage and delivery service
+						A global-scale media storage and delivery service
 					</p>
 				</section>
 				<section>
@@ -78,8 +78,8 @@
 					</ul>
 				</section>
 				<section>
-					<img src="./img/Netflix-OSS-Logo.png"/>
-				</section>
+					<img src="./img/is-current-architecture.png"/>
+				</section>	
 				<section>
 					<img src="./img/hystrix.png"/>
 					<h3>Hystrix</h3>
@@ -88,9 +88,6 @@
 					<h3>Ribbon</h3>
 					<p>Client-side load balancer - Datacenter affinity</p>
 				</section>
-				<section>
-					<img src="./img/is-current-architecture.png"/>
-				</section>	
 				<section>
 					<table>
 						<thead>
@@ -118,16 +115,21 @@
 							</tr>
 							<tr>
 								<td>Failure rate</td>
-								<td>0,000875% (before latest patches)</td>
+								<td>0,000875% (tending to zero)</td>
 							</tr>
 						</tbody>
 					</table>
 				</section>
-				<!-- add netflix OSS stuff here -->
 				
 				<!-- __ USEFUL PATTERNS __ -->
 				<section>
+					<h2>Useful patterns</h2>
+				</section>
+				<section>
 					<h2>Circuit breakers</h2>
+					<img src="./img/circuit-breakers-0.png"/>
+				</section>				
+				<section>
 					<img src="./img/circuit-breakers-1.png"/>
 				</section>				
 				<section>
@@ -136,12 +138,15 @@
 				<section>
 					<img src="./img/circuit-breakers-3.png"/>
 				</section>				
+				<section>
+					<img src="./img/circuit-breakers-0.png"/>
+				</section>				
 				
 				<!--  add links to technology -->
 				<section>
 					<h2>Zero error policy</h2>
 					<p class="fragment">
-						Leverage Ribbon an Hystrix to balance and retry transient failures on requests
+						Leverage Ribbon and Hystrix to balance and retry transient failures on requests
 					</p>
 					<p class="fragment">
 						Recoverable failures are not errors, ignore(*)
@@ -172,7 +177,7 @@
 						Start small, like 10% and increase progressively
 					</p>
 					<p class="fragment">
-						Inevitably, bugs will appear, fix them :)
+						Bugs will (inevitably) appear, fix them :)
 					</p>
 					<p class="fragment">
 						Once at 100%, migrate for the win!
@@ -186,7 +191,7 @@
 				<section>
 					<h2>The Watch</h2>
 					<p class="fragment">
-						Integration tests after builds, periodic end-to-end testing, et cetera
+						Integration tests after builds, periodic end-to-end testing, etcetera
 					</p>
 					<p class="fragment">
 						The Watch, the shield that guards the realms of devops
@@ -215,7 +220,7 @@
 						Invest on stress tests (Locust) but be wary of effort spent
 					</p>
 					<p class="fragment">
-						Fire and Fire and forget, effective way to 'simulate' load
+						Fire and forget, effective way to 'simulate' load
 					</p>
 					<p class="fragment">
 						Processes like The Watch keep your systems warm, be careful when turning them off
@@ -231,7 +236,7 @@
 				<section>
 					<h2>Thank you</h2>			
 					<a class="image" style="border:0px !important" href="http://www.schibsted.com"><img src="./img/word-cloud.png"/></a>
-					<p>Join us text! </p>
+					<p>daniel . giribet [at] schibsted . com</p>
 				</section>
 
 			</div>
