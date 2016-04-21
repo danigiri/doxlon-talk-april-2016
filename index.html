@@ -1,0 +1,264 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Resilient microservice architectures in production</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+				<!-- __ INTRO __ -->
+				<section>
+					<h1>Resilient microservice architectures in production</h1>
+					<p>
+						<h3>Daniel Giribet</h3>
+					</p>
+					<p>
+						<h4>Engineering Manager @ Infrastructure Platform - Schibsted</h4>
+					</p>
+				</section>
+				<section>
+					<h2>Today</h2>
+					<ul>
+						<li>Schibsted intro</li>
+						<li>A resilience global scale service example</li>
+						<li>Useful patterns</li>
+						<li>Lessons learned</li>
+				</ul>
+				</section>
+
+				<!-- __ SCHIBSTED INTRO __ -->
+				<section>
+					<a class="image" href="http://www.schibsted.com"><img src="./img/SMG_Medium_2014_RGB.jpg"/></a>
+					<p class="fragment">Schibsted Media Group is an international media group with 6800 employees in 31 countries</p>
+					<p class="fragment"><strong>250M+ users</strong></p>					
+				</section>
+				<section>
+					<img src="./img/schibsted-classified-map.png"/>
+				</section>	
+				<section>
+					<img src="./img/schibsted_sites.png"/>
+				</section>
+				<section>
+					<img src="./img/leboncoin.png"/>
+				</section>				
+				<!-- __ IMAGE SERVICE __ -->
+				<section>
+					<h2>Image Service</h2>
+					<p>
+						A global-scale image and media storage and delivery service
+					</p>
+				</section>
+				<section>
+					<h2>Features</h2>
+					<ul>
+						<li>On-the-fly image scaling and transformation - arbitrary size support</li>
+						<li>Multitenancy - different orgs and business rules</li>
+						<li>Fast transformation - GPU-acceleration support</li>
+						<li>Scalability - high performance, flexible autoscaling</li>
+						<li>Software as a Service model</li>
+					</ul>
+				</section>
+				<section>
+					<img src="./img/Netflix-OSS-Logo.png"/>
+				</section>
+				<section>
+					<img src="./img/hystrix.png"/>
+					<h3>Hystrix</h3>
+					<p>Flexible &amp; robust microservice requests</p>
+					<img src="./img/ribbon-logo2.png"/>
+					<h3>Ribbon</h3>
+					<p>Client-side load balancer - Datacenter affinity</p>
+				</section>
+				<section>
+					<img src="./img/is-current-architecture.png"/>
+				</section>	
+				<section>
+					<table>
+						<thead>
+							<tr>
+								<th>Fun fact</th>
+								<th>Fun figure (before caching)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Images uploaded / day</td>
+								<td>1M+</td>
+							</tr>
+							<tr>
+								<td>Images served / day</td>
+								<td>25M+</td>
+							</tr>
+							<tr>
+								<td>Image serving latency</td>
+								<td>70ms</td>
+							</tr>
+							<tr>
+								<td>Upload latency</td>
+								<td>100ms</td>
+							</tr>
+							<tr>
+								<td>Failure rate</td>
+								<td>0,000875% (before latest patches)</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+				<!-- add netflix OSS stuff here -->
+				
+				<!-- __ USEFUL PATTERNS __ -->
+				<section>
+					<h2>Circuit breakers</h2>
+					<img src="./img/circuit-breakers-1.png"/>
+				</section>				
+				<section>
+					<img src="./img/circuit-breakers-2.png"/>
+				</section>				
+				<section>
+					<img src="./img/circuit-breakers-3.png"/>
+				</section>				
+				
+				<!--  add links to technology -->
+				<section>
+					<h2>Zero error policy</h2>
+					<p class="fragment">
+						Leverage Ribbon an Hystrix to balance and retry transient failures on requests
+					</p>
+					<p class="fragment">
+						Recoverable failures are not errors, ignore(*)
+					</p>
+					<p class="fragment">
+						Consider an <strong>incident</strong> to have, say, 7 or 8 non-recoverable failures out of 5-6M requests
+					</p>
+					<p class="fragment">
+						Work (tirelessly) until fix
+					</p>
+					<p class="fragment">
+						Repeat
+					</p>					
+				</section>
+				
+				<section>
+					<h2>Stress-free stress testing</h2>
+					<p class="fragment">
+						Simulating large-scale multi-region traffic is (quite) hard
+					</p>
+					<p class="fragment">
+						Replicate incoming user traffic from legacy system asynchronously
+					</p>
+					<p class="fragment">
+						AKA 'Fire and Forget'
+					</p>
+					<p class="fragment">
+						Start small, like 10% and increase progressively
+					</p>
+					<p class="fragment">
+						Inevitably, bugs will appear, fix them :)
+					</p>
+					<p class="fragment">
+						Once at 100%, migrate for the win!
+					</p>
+				</section>
+				
+				<section>
+					<img src="./img/inevitable-meme2.jpg"/>
+				</section>
+
+				<section>
+					<h2>The Watch</h2>
+					<p class="fragment">
+						Integration tests after builds, periodic end-to-end testing, et cetera
+					</p>
+					<p class="fragment">
+						The Watch, the shield that guards the realms of devops
+					</p>
+					<p class="fragment">
+						System to process and double check <strong>every single request</strong> sent to the Image Service
+					</p>
+					<p class="fragment">
+						Extended checking, such as image file integrity
+					</p>
+					<p class="fragment">
+						Find even more bugs, yay!
+					</p>
+				</section>
+				
+				<!-- __ LESSONS LEARNED __ -->
+				<section>
+					<h2>Lessons Learned</h2>
+					<p class="fragment">
+						Circuit breakers protect <strong>users</strong> from failures, not developers
+					</p>
+					<p class="fragment">
+						Zero-error policy useful driver for service improvement
+					</p>
+					<p class="fragment">
+						Invest on stress tests (Locust) but be wary of effort spent
+					</p>
+					<p class="fragment">
+						Fire and Fire and forget, effective way to 'simulate' load
+					</p>
+					<p class="fragment">
+						Processes like The Watch keep your systems warm, be careful when turning them off
+					</p>
+					<p class="fragment">
+						Large scale is not only <strong>possible</strong>, it's even <strong>fun</strong>!
+					</p>
+				</section>
+	
+				<!-- __ THE FUTURE __ -->
+
+				<!-- __ CLOSING __ -->
+				<section>
+					<h2>Thank you</h2>			
+					<a class="image" style="border:0px !important" href="http://www.schibsted.com"><img src="./img/word-cloud.png"/></a>
+					<p>Join us text! </p>
+				</section>
+
+			</div>
+
+		<!-- common thingie at the bottom -->
+		<p style="position:absolute; bottom:0px; left:0.8em; font-size: 1em !important;">
+			<small><a href="http://twitter.com/danielgiri">@danielgiri</a>&nbsp;&nbsp;&nbsp;&nbsp;#doxlon</small>
+		</p>
+			
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
